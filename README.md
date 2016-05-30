@@ -4,7 +4,7 @@ My data has the goal to show the amount of Official Development  Aid (ODA) that 
 
 The problem I hope to solve with this visualization is to show in a clear way how much money is spend on developmental aid, and on what sectors it has been spend throughout the years. 
 
-![](doc/)
+![](doc/sketch.jpg)
 
 I will use the databases from the Organisation for Economic Co-operation and Development (OECD), which works close with ODA, and the World Bank. I want to set these data in a JSON format.
 
