@@ -16,6 +16,6 @@ The data has been collected in JSON form, but in a very large format:
 
 To make te data more useful I want to import it like this:
 
-[Country1 : Sector1{[year1, aid1],...[yearN,aidN]}, Sector2{[year1, aid1],...[yearN,aidN]} ,... CountryN : {SectorN{[year1, aid1],...[yearN,aidN]}}
+[Country1 : Sector1{[year1, aid1],...[yearN,aidN]}, Sector2{[year1, aid1],...[yearN,aidN]} ,... CountryN : SectorN{[year1, aid1],...[yearN,aidN]}
 
 Which makes it easier to acces the data of the various sectors and years
