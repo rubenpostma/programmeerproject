@@ -1,0 +1,28 @@
+as path,
+.as line {
+	stroke: black;
+	fill: none;
+}
+/* zet svg in het midden scherm*/
+#chart{
+	margin-left: auto; 
+	margin-right: auto; 
+	display: block;
+}
+.gmld{
+	stroke: red;
+	fill: none;
+	stroke-width: 3px;
+}
+/* maak seleclijnen dun en staal blauw*/
+.selec {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 0.5px;
+}
+/* maak overlay onzictbaar*/
+.overlay {
+    fill: none;
+	stroke: none;
+	pointer-events: all;
+}
