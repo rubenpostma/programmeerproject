@@ -14,10 +14,10 @@ function MakeMap(){
   var dataset = {}
   var countryset = []
   var sectorset = {}
-  var b = []
+  var arr = []
+  
   // haal data uit JSON file
   d3.json("odaDonor.json", function(data) {
-    console.log(data[0])
     // ga elk element van data af
     for (var i = 0; i < data.length; i++) {
       var country = data[i][0]
@@ -25,21 +25,29 @@ function MakeMap(){
       var year = data[i][2]
       var money = data[i][3]
       
+      if (sector in sectorset) {
+        arr.push([money, year])
+      }
+      else {
+        sectorset = {}
+        arr = []
+        arr.push([money, year])
+      }
+      sectorset[sector] = arr
+      
+      if (containsObject(sectorset, countryset)){
+        countryset.pop(sectorset) 
+      }
+      
       if (country in dataset) {
-        countryset.push({
-          b : sector, c : year, d : money
-        });
+        countryset.push(sectorset);
         
       }
       else {
         countryset = []
-        countryset.push({
-          b : sector, c : year, d : money
-        });
+        countryset.push(sectorset);
       } 
-      
-
-      dataset[country] = {a : countryset, fillKey : pickType(Number(money))}
+      dataset[country] = {oda : countryset, fillKey : pickType(Number(money))}
       
     }
     console.log(dataset)
@@ -51,8 +59,9 @@ function MakeMap(){
       done: function(datamap) {
         datamap.svg.selectAll('.datamaps-subunit').on('click', function(geo) {
           
-          //makeLinegraph(dataset[geo.id].a, geo.properties.name)
-          console.log(dataset[geo.id].a.slice(0, dataset[geo.id].a.length))//[dataset[geo.id].a.length - 1].d, geo.properties.name)
+          makeLinegraph(dataset[geo.id].oda[dataset[geo.id].oda.length - 1].Total, geo.properties.name)
+          console.log(dataset[geo.id].oda[dataset[geo.id].oda.length - 1].Total, geo.properties.name)
+          
         });
       },
       // het is een wereld kaart
@@ -67,8 +76,8 @@ function MakeMap(){
                   return[
           '<div class="hoverinfo"><strong>'
           + geo.properties.name + '</strong></br>'
-          + "ODA: $" + data.a[dataset[geo.id].a.length - 1].d + '</br>'
-          + data.a[9].c +
+          + "ODA: $" + dataset[geo.id].oda[dataset[geo.id].oda.length - 1].Total[0][0] + '</br>'
+          + dataset[geo.id].oda[dataset[geo.id].oda.length - 1].Total[0][1] +
           '</div>'].join('');
         }
 
@@ -90,51 +99,15 @@ function MakeMap(){
     
   });
 }
-
-// zet de marges rondom de grafiek
-var margin = {left : 60, right : 30, top : 25, bottom : 40}
-
-// zet hoogte en breedte van svg
-var width = 1000 - margin.left - margin.right;
-var height = 350 - margin.top - margin.bottom;
-
-// maak y as linear
-var y = d3.scale.linear()
-  .range([height, 0]);
-// maak x as oridinaal en bepaal ruimte tussen staven
-var x = d3.scale.ordinal()
-    .rangeRoundBands([0, width], .2);
-// zet y as links
-var yas = d3.svg.axis()
-  .scale(y)
-  .orient("left")
-// zet xas beneden  
-var xas = d3.svg.axis()
-  .scale(x)
-  .orient("bottom");
-
-// maak label die data values toont
-var tip = d3.tip()
-  .attr('class', 'd3-tip')
-  .offset([-10, 0])
-  .html(function(d) {
-    return "<strong> GDP per Capita \n" + d.year + ":</strong> <span style='color:red'> $" + Number(d.gdp)+ "</span>";
-  })
-  
-// maak svg in body 
-var svg = d3.select("#chart")
-  // bepaal hoogte en breedte met variabelen
-  .attr("height", height + margin.top + margin.bottom)
-  .attr("width", width + margin.left + margin.right)
-  // maak g in svg
-  .append("g")
-  // verplaats naar de marges waar de assen komen
-  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-  .style('font-family', 'verdana')
-  .style('font-size', 10);
-
-// roep label op in svg
-svg.call(tip);
+function containsObject(obj, list) {
+    var i;
+    for (i = 0; i < list.length; i++) {
+        if (list[i] === obj) {
+            return true;
+        }
+    }
+    return false;
+}
 
 
 
@@ -159,80 +132,170 @@ function pickType(value) {
         return "typefive" ;
     }
 }
+// zet de marges rondom de grafiek
+var margin = {left : 45, right : 120, top : 25, bottom : 40}
 
-// BarChart functie met transition
-// met hulp van http://bl.ocks.org/enjalot/1429426
-function makeBarChart(a, land){
-  // geef assen domeinen
-  y.domain([0, d3.max(a, function(d) { return Number(d.gdp); })]);
-  x.domain(a.map(function(d) { return d.year; }));
+// zet hoogte en breedte van svg
+var width = 1000 - margin.left - margin.right;
+var height = 350 - margin.top - margin.bottom;
+
+var svg = d3.select("body").append("svg")
+  // zet id="chart"
+  .attr("id", "line")
+  // bepaal hoogte en breedte met variabelen
+  .attr("height", height + margin.top + margin.bottom)
+  .attr("width", width + margin.left + margin.right)
+  // maak g in svg
+  .append("g")
+    // verplaats naar de marges waar de assen komen
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+function makeLinegraph(arr, land) {
   
-  svg.selectAll(".as").remove();
-  svg.select(".land").remove();
+  arr = arr.map(function(d) {
+    return {
+      aid: Number(d[0]),
+      year: reformat(d[1])
+    };
+  });
 
-  // maak y as in svg
+  // zet de domeinen van data 
+  var xdomain = d3.extent(arr, function(d) { return d.year });
+  var ydomain = [0, d3.max(arr, function(d) { return (d.aid) + 2;})];
+
+  //  bepaal schaal, range en domain van y
+  var yscale = d3.scale.linear()
+    .range([height, 0])
+    .domain(ydomain);
+
+  // bepaal schaal range en domein van x
+  var xscale = d3.time.scale()
+      .range([0, width])
+      .domain(xdomain);
+  
+  // zet y as links
+  var yas = d3.svg.axis()
+    .scale(yscale)
+    .orient("left")
+  // zet xas beneden  en maak ticks elke twee dagen
+  var xas = d3.svg.axis()
+    .scale(xscale)
+    .ticks(d3.time.day, 2)
+    .orient("bottom");
+
+  // bepaal x en y doordinaten van lijn
+  var line = d3.svg.line()
+      .x(function(d) { return xscale(d.year); })
+      .y(function(d) { return yscale(d.aid); });
+
+  
+  // zet y as in svg
   svg.append("g")
     .attr("class", "y as")
     .call(yas)
-    // voeg tekst aan yas
     .append("text")
       // zet tekst op juiste plek
         .attr("transform", "rotate(-90)")
         .attr("y", 6)
-        .attr("dy", ".45em")
+        .attr("dy", ".50em")
         .style("text-anchor", "end")
-        // maak tekst langs Yas 
-        .text("GDP per Capita (current US$)");
+        // maak tekst "Celcius"
+        .text("Celsius");
 
-  // maak x as in svg 
+  // zet x as in svg
   svg.append("g")
     .attr("class", "x as")
-    // verplaats op juiste hoogte
     .attr("transform", "translate(0," + height + ")")
     .call(xas);
 
-  // selecteer de staven
-  var bars = svg.selectAll("rect.bar")
-    .data(a)
+  // zet lijn in svg
+  svg.append("path")
+      .datum(arr)
+      .attr("class", "gmld")
+      // haal coordinaten van line
+      .attr("d", line);
+
+  // maak selec in svg om data te selecteren
+  var selec = svg.append("g").style("display", "none")
+
+    // maak horizontale lijn om data van y as te selecteren
+    selec.append('line')
+      .attr("id", "xselec")
+      .attr("class", "selec")
+    // maak verticale lijn om data van y as te selecteren
+    selec.append("line")
+      .attr("id", "yselec")
+      .attr("class", "selec")
     
-    // voeg bar toe aan svg
-  bars.enter()
-    .append("svg:rect")
-    // geef class bar
-    .attr("class", "bar")
-    // laat label zien als muis op bar is
-    .on('mouseover', tip.show)
-    // verberg label als muis van bar gaat
-    .on('mouseout', tip.hide)
-  
-  // verwijder oude bars
-  bars.exit()
-    .transition()
-    .duration(300)
-    .ease("exp")
-      .attr("height", 0)
-       .remove()    
+    // voeg tekst langs horizontale lijn
+    selec.append("text")
+      .attr("id", "xtext")
+      .style("font-family", "Verdana")
+      .style("font-weight", "bold")
+    // voeg tekst labgs verticale lijn
+    selec.append("text")
+      .attr("id", "ytext")
+      .attr("transform", "rotate(-90)")
+      .style("font-family", "Verdana")
+      .style("font-weight", "bold")
 
-  // voeg nieuwe bars toe
-  bars
-    .transition()
-    .duration(300)
-    .ease("quad")   
-      // bepaal breedte bar
-      .attr("x", function(d) { return x(d.year); })
-      .attr("width", x.rangeBand)
-      .attr("y", function(d) { return y(Number(d.gdp)); })
-      // bepaal hoogte bar
-      .attr("height", function(d) { return height - y(Number(d.gdp)); })
+  // // maak bisector om dichtsbizijnde datapunt op xas aan te wijzen 
+  // var bisectDate = d3.bisector(function(d) { return d.year; }).left;
 
-  // zet naam land in grafiek
-  svg.append("text")
-    .attr("class", "land")
-    .attr("y", 20)
-    .attr("x", 40)
-    .text(land)
-    .style("fill", "#bbbbbb")
-    .style("font-size", 14)
-    .style("font-weight", "bold")      
+  // // zet overlay over grafiek
+  // svg.append('rect')
+  //   .attr("class", "overlay")
+  //   .attr('width', width)
+  //   .attr('height', height) 
+  //   // laat elementen van layover zien als muis over grafiek heengaat
+  //   .on('mouseover', function() { selec.style('display', null); })
+  //   // en verberg elementen zoniet
+  //   .on('mouseout', function() { selec.style('display', 'none'); })
+  //   // bij muisbeweging
+  //   .on('mousemove', function() { 
+  //           // haal coordinaten van muis in overlay
+  //           var mouse = d3.mouse(this);
+  //           // zet xcoordinaten van muis om in xdata van json file
+  //           var mouseDate = xscale.invert(mouse[0]);
+  //           // haalt index van x data
+  //           var i = bisectDate(arr, mouseDate); 
+  //           // bepaal index naast huidige index
+  //           var d0 = arr[i - 1]
+  //           var d1 = arr[i];
+  //           // bepaal welke data dichter bij de muis is
+  //           var d = mouseDate - d0[0] > d1[0] - mouseDate ? d1 : d0;
+
+  //           // bepaal coordinate van selec lijnen
+  //           var x = xscale(d.year);
+  //           var y = yscale(d.aid);
+           
+  //           // geef selec lijnen juiste coordinaten
+  //           selec.select('#xselec')
+  //               .attr('x1', x).attr('y1', yscale(ydomain[0]))
+  //               .attr('x2', x).attr('y2', yscale(ydomain[1]))
+  //           selec.select('#yselec')
+  //               .attr('x1', xscale(xdomain[0])).attr('y1', y)
+  //               .attr('x2', xscale(xdomain[1])).attr('y2', y)
+            
+  //           // en de juiste tekst langs de lijne
+  //           selec.select('#xtext')
+  //             .text(d.aid + " Graden")
+  //             .attr('x', x + 30)
+  //             .attr('y', y)
+  //           selec.select('#ytext')
+  //             .text(setdate(d.year))
+  //             .attr('x', -260)
+  //             .attr('y', x + 11)
+              
+
+        // });
 
 }
+
+function reformat (d) {
+  
+  d = d3.time.format('%Y').parse(d);
+  d = new Date(d);
+  return d.getTime();
+};
+
