@@ -9,7 +9,7 @@ as path,
 	margin-right: auto; 
 	display: block;
 }
-.gmld{
+.aid{
 	stroke: red;
 	fill: none;
 	stroke-width: 3px;
@@ -25,4 +25,13 @@ as path,
     fill: none;
 	stroke: none;
 	pointer-events: all;
+}
+.as path,
+.as line {
+	stroke: black;
+	fill: none;
+}
+/*maak staaf blauw*/
+.bar{
+	fill: brown;
 }

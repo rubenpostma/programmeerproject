@@ -1,0 +1,21 @@
+Processbook
+
+Day 2
+Searching and collecting the data, the amount of how many aid a country donates and the variation in sector and years, from OECD and World Bank and transferring it into a JSON files. Also I collected the code to make datamaps in d3. 
+
+Day 4
+I have been busy by importing my data in to the javascript code and have linked the various sectors and years to the countrycodes and to my map. I also have decided to add a slider and toggle option to my map. 
+
+Day 5
+Finally had the data loaded in correctly, in a way that I could use to make the line chart. But it wasnt the most efficient way. 
+
+
+Day 6
+Showed my code during the hour of code, there were some inefficient way of coding so I fixed those lines. Then I tried to work 
+around the ineffiecient database I created, the conclusion was that I need to try to parse my data in a different format.
+
+Day 7
+Parsed my data in a different form for the line graph, which was I was able to draw at the end of the day. But I came to the conclusion that the data needs to be sligtly different for creating the barchart.
+
+Day 8
+Created a different json file for the barchart which is being parsed in a similiar way for the line graph but the outcome for the dataset is different. Now my three visualisations are working and reacting to each other. 
