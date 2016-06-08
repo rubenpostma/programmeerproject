@@ -16,8 +16,8 @@ The data has been collected in JSON form, but in a very large format:
 
 To make te data more useful for both creating the linegraph as thebarchart  I want to import the linegraph data like this:
 
-[Country1 : [sector1[year1, aid1], [year2, aid2] ..], [sector2[year1,aid1].....
+{Country1 : [sector1[year1, aid1], [year2, aid2] ..], [sector2[year1,aid1].....]}
 
 And for the bar graph:
 
-[Country1 : [year1[sector1, aid1], [sector2, aid2] ..], [year2[sector1,aid1].....
+{Country1 : [year1[sector1, aid1], [sector2, aid2] ..], [year2[sector1,aid1]....]}.
