@@ -1,8 +1,3 @@
-as path,
-.as line {
-	stroke: black;
-	fill: none;
-}
 /* zet svg in het midden scherm*/
 #chart{
 	margin-left: auto; 
@@ -34,4 +29,28 @@ as path,
 /*maak staaf blauw*/
 .bar{
 	fill: brown;
+}
+
+#container1
+{
+	height: 400px; 
+	width: 900px; 
+	margin: 0 auto;
+}
+
+#wrapper {
+	height: 200px;
+    width: 1000px;
+    margin: 0 auto;
+}
+#linegraph {
+	height: 200px;
+    width: 498px;
+    float:left; 
+   
+}
+#barchart {
+	height: 200px;
+	width: 498px;
+    float: left; 
 }
