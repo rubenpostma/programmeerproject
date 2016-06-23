@@ -7,6 +7,8 @@ the countries based on the amount of ODA they give or receive. The second level 
 of a country throughout the period of 2005-2014, which is vizualized with a linegraph. And a third level of comparision
 is possible with the donating countries, which is a comparision of the various sectors ODA is given to by a country in specific year.
 
+![](doc/oda_vizualization.png)
+
 ####Technical Design
 
 My visualization uses various libraries, most prominently d3 and datamaps. I use d3.json to loadd in the data in my make map function.
