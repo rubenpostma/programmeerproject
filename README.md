@@ -29,6 +29,8 @@ This code is under public domain, so anyone is free to use it. For details check
 I made this code using the following external code 
 
 d3: Copyright (c) 2010-2016, Michael Bostock
+
 d3-tips: Copyright (c) 2013 Justin Palmer
+
 jquery: jQuery v1.12.2 | (c) jQuery Foundation | jquery.org/license
 
