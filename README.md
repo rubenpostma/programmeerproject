@@ -24,3 +24,11 @@ I will use the databases from the Organisation for Economic Co-operation and Dev
 
 A similar visualization can be found on the site of the OECD but shows only a map that only shows how much a of the aid a country receives is ODA.  
 
+This code is under public domain, so anyone is free to use it. For details check LICENSE.md
+
+I made this code using the following external code 
+
+d3: Copyright (c) 2010-2016, Michael Bostock
+d3-tips: Copyright (c) 2013 Justin Palmer
+jquery: jQuery v1.12.2 | (c) jQuery Foundation | jquery.org/license
+
