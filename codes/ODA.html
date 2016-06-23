@@ -1,24 +1,36 @@
 <html>
     <head>
+        
+        
     	<title>ODA</title>
     </head>
     <body>
-    	<h1 align = "center"><font face="Verdana" color="#fb6a4a">Official Developmental Aid</font></h1>
+        
+        <ul id="links">
+            <li><a href="intro.html">Introduction</a></li>
+            <li><a class="active" href="ODA.html">ODA</a></li>
+        </ul>
+    
+    	<h1 align = "center">Official Developmental Assistance</h1>
         
         <div id="buttons"></div>
+        <div id="legend"></div>
         <div id="container1"></div>
+        <div id="info"></div>
         <div id="wrapper">
-            <p id="lineinfo"></p>
             <div id="linegraph"></div>
             <div id="barchart"></div>
         </div>
-     	
+       
+     	<p  align="center"> Source:<a href="http://www.oecd.org/dac/stats/idsonline.htm"> OECD</a></p>
+       
+
         <link rel="stylesheet" type="text/css" href="ODA.css"/>
         <script src="http://datamaps.github.io/scripts/topojson.js"></script>
         <script type="text/javascript" src="d3/d3.min.js"></script>
-        <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+        <script src="d3-tip.js"></script>
         <script src="datamaps.js"></script>
+        <script src="receive.js"></script>
         <script src="ODA.js"></script>
-
-    </body>
+    </body>    
 </html>

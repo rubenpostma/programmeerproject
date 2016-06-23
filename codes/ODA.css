@@ -1,36 +1,84 @@
 /* zet svg in het midden scherm*/
+/* bepaal atributen legenda*/
+
+/*maak achtergrond smokewhite*/
+body{
+	background-color: 	#F5F5F5;
+	font-family: sans-serif;
+}
+
+/*style link bar*/
+/*http://www.w3schools.com/css/css_navbar.asp*/
+#links {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #de2d26;
+}
+
+
+li {
+    float: left;
+}
+
+#links a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+#links a:hover:not(.active) {
+    background-color: #fb6a4a;
+}
+
+.active {
+    background-color: #3182bd;
+}
+
+/*style for buttons*/
+.button{
+	border-radius: 4px;
+	background-color: #ededed;
+    color: black;
+    padding: 9px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 5px; 
+}
+#button1{
+	border: 2px solid #de2d26;
+}
+#button2{
+	border: 2px solid #3182bd;
+}
+#buttons{
+	text-align: center;
+}
+/*make legend small stroke over entire screen*/
+#legend label,
+#legend span {
+  display:block;
+  float:left;
+  height:15px;
+  width:20%;
+  text-align:center;
+  font-size:12px;
+  font-weight: bold;
+  
+}
+/*put map in center of screen*/
 #chart{
 	margin-left: auto; 
 	margin-right: auto; 
 	display: block;
 }
-.aid{
-	stroke: red;
-	fill: none;
-	stroke-width: 3px;
-}
-/* maak seleclijnen dun en staal blauw*/
-.selec {
-    fill: none;
-    stroke: steelblue;
-    stroke-width: 0.5px;
-}
-/* maak overlay onzictbaar*/
-.overlay {
-    fill: none;
-	stroke: none;
-	pointer-events: all;
-}
-.as path,
-.as line {
-	stroke: black;
-	fill: none;
-}
-/*maak staaf blauw*/
-.bar{
-	fill: brown;
-}
 
+/*define size of map container*/
 #container1
 {
 	height: 400px; 
@@ -38,19 +86,125 @@
 	margin: 0 auto;
 }
 
+/*define size wrapper */
 #wrapper {
 	height: 200px;
     width: 1000px;
     margin: 0 auto;
 }
+
+/*define size linegraph */
 #linegraph {
 	height: 200px;
     width: 498px;
     float:left; 
    
 }
+
+/*make line in graph red end 3px wide*/
+.aid{
+	stroke: red;
+	fill: none;
+	stroke-width: 3px;
+}
+/* make selectionlines blue and thin*/
+.selec {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 0.5px;
+}
+/* make overlay invisible*/
+.overlay {
+    fill: none;
+	stroke: none;
+	pointer-events: all;
+}
+/*axis black*/
+.as path,
+.as line {
+	stroke: black;
+	fill: none;
+}
+
+/*define size barchart */
 #barchart {
 	height: 200px;
 	width: 498px;
     float: left; 
+}
+/*set bars brown and add hover color*/
+.bar{
+	fill: brown;
+}
+.bar:hover{
+	fill: orangered;
+}
+
+
+/*make label*/
+.d3-tip {
+
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 8px;
+}
+
+/* make pointer label*/
+.d3-tip:after {
+  
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* put pointer on end label*/
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+/*style for titel div*/
+.titel{
+	padding: 5px;
+    background-color: #d3d3d3;
+    border: solid 1px #c3c3c3;
+    font-weight: bold;
+}
+
+/*style for text div*/
+.tekst{
+	padding: 20px;
+	background-color: #ededed;
+	display: none;
+}
+
+/*style for lists*/
+.lijst{
+	display: inline-block;
+}
+
+/*style for p*/
+p{
+	padding: 10px
+}
+
+/*set info svg in centre screen*/
+#source{
+	display:block;
+	margin: auto;
+}
+
+/*set info svg in centre screen*/
+.info{
+	display:block;
+	margin: auto;
 }
